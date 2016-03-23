@@ -13,7 +13,7 @@ mkdir -vp $inbox$title
 
 wget -O $inbox$title/$now.png "$url/pub?w=$size&h=$size"
 
-if [ $(duff -re main/ | wc -l) -gt 0 ]
+if [ $(duff -re $inbox$title/ | wc -l) -gt 0 ]
   then
 
     echo "no changes …"
