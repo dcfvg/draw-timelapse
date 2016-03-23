@@ -3,33 +3,32 @@
 
 # watch -n 10 bash getgdraw.sh
 
-name=$1
+title=$1
 inbox=$2
 size=$3
 url=$4
 
 now=$(date +"%Y%m%d_%H%M%S")
-mkdir -vp $inbox$name
+mkdir -vp $inbox$title
 
-wget -O $inbox$name/$now.png "$url/pub?w=$size&h=$size"
-rm `duff -re $inbox$name/`
+wget -O $inbox$title/$now.png "$url/pub?w=$size&h=$size"
 
-# HD VERSION
-# convert -resize $size -alpha remove \
-#         -loop 0  -delay 1x3\
-#         -colors 8 -dither FloydSteinberg \
-#         "$inbox$name/*.png" $inbox$name/animated.gif
+if [ $(duff -re main/ | wc -l) -gt 0 ]
+  then
 
-# gifsicle -O $inbox$name/animated.gif > $inbox$name/$name-opt.gif
+    echo "no changes …"
+    rm `duff -re $inbox$title/`
 
-# rm $inbox$name/animated.gif
+  else
 
-# SD VERSION
-convert -resize 250 -alpha remove \
-        -loop 0  -delay 1x3\
-        -colors 8 -dither FloydSteinberg \
-        "$inbox$name/*.png" $inbox$name/animated.gif
+  echo "updating gif animation …"
+  convert -resize $size -alpha remove \
+          -loop 0  -delay 1x3\
+          -colors 8 -dither FloydSteinberg \
+          "$inbox$title/*.png" $inbox$title/animated.gif
 
-gifsicle -O $inbox$name/animated.gif > $inbox$name/$name-opt.gif
+  gifsicle -O $inbox$title/animated.gif > $inbox$title/$title-opt.gif
 
-rm $inbox$name/animated.gif
+  rm $inbox$title/animated.gif
+
+fi
